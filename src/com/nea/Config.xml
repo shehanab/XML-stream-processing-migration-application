@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<DBConnection>jdbc:sqlserver://NCS-220719BL04\SQLEXPRESS;database=oneils;user=TestLogin;password=PQATest@123</DBConnection>
+	<MetadataInputFolder>D:/26-09-test/metadata</MetadataInputFolder>
+	<DocFolder>D:/26-09-test/DocFolder/ILS</DocFolder>
+	<ErrorFolder>D:/26-09-test</ErrorFolder>
+	<ALFRESCOUSERNAME>admin</ALFRESCOUSERNAME>
+	<ALFRESCOPASSWORD>admin</ALFRESCOPASSWORD>
+	<ALFRESCOURL>http://10.0.0.7:8080/alfresco/api/-default-/cmis/versions/1.1/atom</ALFRESCOURL>
+	<ALFRESCOROOTFOLDER>a1-test</ALFRESCOROOTFOLDER>
+</Config>
