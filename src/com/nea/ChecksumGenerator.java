@@ -13,19 +13,6 @@ import static org.apache.commons.io.IOUtils.toByteArray;
 
 public class ChecksumGenerator {
 
-    /*public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        ArrayList<File> fileList = new ArrayList<File>();
-        StringBuilder sb = new StringBuilder();
-        checksum main = new checksum();
-        main.readFilesFrmSubfolders(args[0], fileList);
-
-        for (int i = 0; i < fileList.size(); i++) {
-            writeChecksum(args[1], fileList.get(i), sb, main);
-        }
-    }*/
-
-
     public String generateChecksum(File file) {
         try (InputStream is = Files.newInputStream(Paths.get(file.getPath()))) {
             return DigestUtils.md5Hex(toByteArray(is));
@@ -34,7 +21,6 @@ public class ChecksumGenerator {
             return "";
         }
     }
-
 
     private void writeChecksum(String arg, File file, StringBuilder sb, ChecksumGenerator main) {
 
