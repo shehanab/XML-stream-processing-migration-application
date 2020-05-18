@@ -11,21 +11,13 @@ import java.util.HashMap;
 public class DatabaseOperations {
 
     private static final Logger logger = Logger.getLogger(DatabaseOperations.class);
+
+    private static final String SQL_INSERT_PARAMS = "INSERT INTO TBL_MIGRATION (ObjectID,Name,Type,Subject,Title,CreatorName,CreatedDate,Format,OwnerName,appl_no,lic_no,r_full_content_size,folderpath,filechecksum,targetFileChecksum,ContentURL) ";
+    private static final String SQL_INSERT_VALUES = "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String SQL_DELETE_RECORD = "DELETE FROM TBL_MIGRATION WHERE ObjectID = ?";
     private Connection con;
 
     public void setDBConnection(HashMap<String, String> config) throws Exception {
-/*		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		String serverName = config.get("DBServerName");
-		String portNumber = config.get("DBPort");
-		String sid = config.get("SID");
-		String url = "jdbc:oracle:thin:@" + serverName + ":" + portNumber + "/"	+ sid; // change : to / for oracle 12c
-		String username = config.get("USERNAME");
-		String password = config.get("PASSWORD");
-
-		Connection conn= DriverManager.getConnection(url, username, password);
-
-		return conn;*/
-
         DriverManager.registerDriver(new com.microsoft.sqlserver.jdbc.SQLServerDriver());
 
         if (con == null || con.isClosed()) {
@@ -39,15 +31,15 @@ public class DatabaseOperations {
                 con.close();
             }
         } catch (SQLException e) {
+            logger.error("DB ERROR OCCURRED ", e);
             e.printStackTrace();
         }
     }
 
-    public void insertRecord(HashMap<String, String> curMetadata, String docUrl,
-                             String currentFileChecksum) {
+    public void insertRecord(HashMap<String, String> curMetadata, String docUrl, String currentFileChecksum) {
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("INSERT INTO TBL_MIGRATION (ObjectID,Name,Type,Subject,Title,CreatorName,CreatedDate,Format,OwnerName,appl_no,lic_no,r_full_content_size,folderpath,filechecksum,targetFileChecksum,ContentURL) ");
-        sqlBuilder.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        sqlBuilder.append(SQL_INSERT_PARAMS);
+        sqlBuilder.append(SQL_INSERT_VALUES);
         PreparedStatement ps;
         try {
             ps = con.prepareStatement(sqlBuilder.toString());
@@ -74,23 +66,22 @@ public class DatabaseOperations {
                 ps.close();
             }
         } catch (Exception e) {
-            logger.info("DB ERR: " + e.getMessage());
+            logger.error("DB ERROR OCCURRED ", e);
             e.printStackTrace();
         }
     }
 
     public void deleteRecord(String ObjectID) {
-        String query = "DELETE FROM TBL_MIGRATION WHERE ObjectID = ?";
         PreparedStatement ps;
         try {
-            ps = con.prepareStatement(query);
+            ps = con.prepareStatement(SQL_DELETE_RECORD);
             ps.setString(1, ObjectID);
             ps.executeUpdate();
             if (ps != null) {
                 ps.close();
             }
         } catch (Exception e) {
-            logger.info("DB ERR: " + e.getMessage());
+            logger.error("DB ERROR OCCURRED ", e);
             e.printStackTrace();
         }
     }
